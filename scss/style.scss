@@ -272,9 +272,10 @@ $border-width: 2px;
 }
 
 .heart-beat {
-  animation: latido 1.2s infinite;
-  transform-origin: center;
-  display: inline-block; /* importante para que escale bien */
+    animation: latido 1.2s infinite;
+    transform-origin: center;
+    display: inline-block;
+    /* importante para que escale bien */
 }
 
 @media (min-width: 220px) {
@@ -544,108 +545,119 @@ $border-width: 2px;
 /* Estilo página de sobre */
 /* Estilos generales para la pantalla de invitación */
 body.intro-page {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom, #f7edff, #f4e8fa);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom, #f7edff, #f4e8fa);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .intro-container {
-  text-align: center;
-  max-width: 600px;
-  width: 90%;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
 }
 
 .titulo-invitacion {
-  font-size: 2.5rem;
-  color: #6a1b9a;
-  margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: #6a1b9a;
+    margin-bottom: 2rem;
 }
 
 .envelope-btn {
-  display: inline-block;
-  text-decoration: none;
+    display: inline-block;
+    text-decoration: none;
 }
 
 .sobre-img {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  transition: transform 0.3s ease;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    transition: transform 0.3s ease;
 }
 
 .envelope-btn:hover .sobre-img {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .click-text {
-  margin-top: 1rem;
-  font-size: 1.2rem;
-  color: #6a1b9a;
-  font-weight: 600;
-  animation: pulse 1.8s infinite;
+    margin-top: 1rem;
+    font-size: 1.8rem;
+    color: #6a1b9a;
+    font-weight: 600;
+    animation: pulse 1.8s infinite;
+    font-family: 'Great Vibes', cursive;
+    ;
 }
 
 @keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
 
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
 }
 
 @media (max-width: 480px) {
-  .titulo-invitacion {
-    font-size: 1.8rem;
-  }
+    .titulo-invitacion {
+        font-size: 1.8rem;
+    }
 
-  .click-text {
-    font-size: 1rem;
-  }
+    .click-text {
+        font-size: 1rem;
+        font-family: 'Great Vibes', cursive;
+        ;
 
-  .sobre-img {
-    max-width: 450px;
-  }
+    }
+
+    .sobre-img {
+        max-width: 450px;
+    }
 }
+
 .envelope-btn {
-  position: relative;
-  display: inline-block;
-  text-align: center;
+    position: relative;
+    display: inline-block;
+    text-align: center;
 }
 
 .sobre-img {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  display: block;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    display: block;
 }
 
 .nombre-invitado {
-  position: absolute;
-  bottom: 132px; /* ajusta verticalmente */
-  left: 55%;
-  transform: translateX(-50%);
-  padding: 10px 25px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
-  z-index: 2;
-  white-space: nowrap;
-  font-family: 'Great Vibes', cursive;;
+    position: absolute;
+    bottom: 145px;
+    /* ajusta verticalmente */
+    left: 55%;
+    transform: translateX(-50%);
+    padding: 10px 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    z-index: 2;
+    white-space: nowrap;
+    font-family: 'Great Vibes', cursive;
+    ;
 }
 
 @media (max-width: 750px) {
-.nombre-invitado {
-  position: absolute;
-  bottom: 115px; /* ajusta verticalmente */
-  left: 50%;
-}
+    .nombre-invitado {
+        position: absolute;
+        bottom: 115px;
+        /* ajusta verticalmente */
+        left: 50%;
+    }
 }

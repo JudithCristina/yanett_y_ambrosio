@@ -9163,7 +9163,8 @@ a.text-dark:hover, a.text-dark:focus {
 .heart-beat {
   animation: latido 1.2s infinite;
   transform-origin: center;
-  display: inline-block; /* importante para que escale bien */
+  display: inline-block;
+  /* importante para que escale bien */
 }
 
 @media (min-width: 220px) {
@@ -9451,10 +9452,11 @@ body.intro-page {
 
 .click-text {
   margin-top: 1rem;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   color: #6a1b9a;
   font-weight: 600;
   animation: pulse 1.8s infinite;
+  font-family: "Great Vibes", cursive;
 }
 
 @keyframes pulse {
@@ -9473,6 +9475,7 @@ body.intro-page {
   }
   .click-text {
     font-size: 1rem;
+    font-family: "Great Vibes", cursive;
   }
   .sobre-img {
     max-width: 450px;
@@ -9493,7 +9496,8 @@ body.intro-page {
 
 .nombre-invitado {
   position: absolute;
-  bottom: 132px; /* ajusta verticalmente */
+  bottom: 145px;
+  /* ajusta verticalmente */
   left: 55%;
   transform: translateX(-50%);
   padding: 10px 25px;
@@ -9508,7 +9512,8 @@ body.intro-page {
 @media (max-width: 750px) {
   .nombre-invitado {
     position: absolute;
-    bottom: 115px; /* ajusta verticalmente */
+    bottom: 115px;
+    /* ajusta verticalmente */
     left: 50%;
   }
 }
