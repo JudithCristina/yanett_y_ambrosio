@@ -251,11 +251,31 @@ $border-width: 2px;
     margin-bottom: 30px;
 }
 
+@keyframes heart-beat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    75% {
+        transform: scale(1.1);
+    }
+}
+
 @media (min-width: 220px) {
     .timeline::after {
         position: absolute;
         content: "";
-        width: 2px;
+        width: 50px;
         top: 0;
         bottom: 0;
         left: 50%;
@@ -279,12 +299,17 @@ $border-width: 2px;
     .timeline .row::after {
         content: "\f004";
         font-family: "Font Awesome 5 Free";
-        font-weight: 400;
+        font-weight: 900;
         position: absolute;
         top: calc(50% - 10px);
         left: calc(50% - 8px);
         color: $primary;
         z-index: 2;
+
+        font-size: 20px; // Puedes ajustar el tamaño si lo deseas
+        display: inline-block; // ⚠️ Esta línea es imprescindible
+        transform-origin: center;
+        animation: heart-beat 1.2s infinite;
     }
 }
 
@@ -348,12 +373,21 @@ $border-width: 2px;
     background: $light;
     font-size: 30px;
 }
+
 /********** Music Button **********/
 // Animación para el ícono
 @keyframes pulse {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.15); }
-  100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .music-button {
@@ -461,38 +495,151 @@ $border-width: 2px;
     height: auto;
     border-radius: 10px;
 }
+
 .text-transparent {
-  color: #ecdef4!important;
-  font-weight: 700!important;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4)!important;
+    color: #ecdef4 !important;
+    font-weight: 700 !important;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4) !important;
 }
 
 @media (max-width: 767.98px) {
     #event .border-right {
         border-right: none !important;
     }
-    .font-size-mobile{
-    font-size: 13px!important;
+
+    .font-size-mobile {
+        font-size: 13px !important;
+    }
 }
-}
+
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .animate-on-scroll {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .animate-on-scroll.visible {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Estilo página de sobre */
+/* Estilos generales para la pantalla de invitación */
+body.intro-page {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #f7edff, #f4e8fa);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-container {
+  text-align: center;
+  max-width: 600px;
+  width: 90%;
+}
+
+.titulo-invitacion {
+  font-size: 2.5rem;
+  color: #6a1b9a;
+  margin-bottom: 2rem;
+}
+
+.envelope-btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.sobre-img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.envelope-btn:hover .sobre-img {
+  transform: scale(1.05);
+}
+
+.click-text {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #6a1b9a;
+  font-weight: 600;
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo-invitacion {
+    font-size: 1.8rem;
+  }
+
+  .click-text {
+    font-size: 1rem;
+  }
+
+  .sobre-img {
+    max-width: 450px;
+  }
+}
+.envelope-btn {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.sobre-img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+}
+
+.nombre-invitado {
+  position: absolute;
+  bottom: 140px; /* ajusta verticalmente */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  z-index: 2;
+  white-space: nowrap;
+  font-family: 'Great Vibes', cursive;;
+}
+
+@media (max-width: 750px) {
+.nombre-invitado {
+  position: absolute;
+  bottom: 120px; /* ajusta verticalmente */
+  left: 50%;
+}
 }
