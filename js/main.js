@@ -179,3 +179,47 @@ document.addEventListener("DOMContentLoaded", function () {
         contenedor.textContent = `${decodeURIComponent(nombre)}`;
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const envelope = document.querySelector("a.envelope-btn"); // El botón que lleva a inicio.html
+  if (envelope) {
+    envelope.addEventListener("click", function () {
+      // Guardar bandera en localStorage
+      localStorage.setItem("playMusic", "true");
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const audio = document.getElementById('bg-music');
+  const musicBtn = document.getElementById('music-btn');
+
+  if (!audio) return;
+
+  // ✅ Reproducir automáticamente si viene del sobre
+  const shouldPlay = localStorage.getItem("playMusic");
+  localStorage.removeItem("playMusic"); // Limpia la bandera
+
+  if (shouldPlay === "true") {
+    audio.play().then(() => {
+      if (musicBtn) musicBtn.classList.add('active');
+    }).catch(() => {
+      console.warn("Navegador bloqueó reproducción automática");
+    });
+  }
+
+  // ✅ Control manual del botón
+  if (musicBtn) {
+    let isPlaying = !audio.paused;
+
+    musicBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        musicBtn.classList.add('active');
+      } else {
+        audio.pause();
+        musicBtn.classList.remove('active');
+      }
+    });
+  }
+});
