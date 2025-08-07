@@ -322,7 +322,7 @@ $border-width: 2px;
 
 .bg-gallery {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/familia_3d.png), no-repeat center center;
-    background-size:contain
+    background-size: contain
 }
 
 .gallery-carousel .owl-nav {
@@ -358,7 +358,7 @@ $border-width: 2px;
 /********** Music Button **********/
 .music-button {
     position: fixed;
-    top: 20px;
+    top: 80px;
     right: 20px;
     width: 60px;
     height: 60px;
@@ -403,59 +403,60 @@ $border-width: 2px;
 }
 
 #countdown-section {
-  position: absolute;
-  bottom: 40px;
-  z-index: 10;
+    position: absolute;
+    bottom: 80px !important;
+    z-index: 10;
 
-  #countdown {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    padding: 0.75rem 1rem;
-    max-width: 500px;
-    margin: auto;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  }
+    #countdown {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 0.75rem 1rem;
+        max-width: 500px;
+        margin: auto;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
 
-  #countdown h2 {
-    font-size: 2.2rem;
-  }
+    #countdown h2 {
+        font-size: 2.2rem;
+    }
 
-  #countdown p {
-    font-size: 0.9rem;
-  }
+    #countdown p {
+        font-size: 0.9rem;
+    }
 }
+
 #countdown-section h1 {
-  color: #ecdef4; /* color lila elegante */
-  font-size: 2.5rem;
-  font-family: 'Great Vibes', cursive; /* una tipografía cursiva romántica */
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    color: #ecdef4;
+    font-size: 2.5rem;
+    font-family: 'Great Vibes', cursive;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 .calendar-decorativo {
-  background-color: #fffaf9; // fondo rosado claro elegante
+    background-color: #fffaf9; // fondo rosado claro elegante
 }
 
 .calendar-header {
-  font-size: 2.5rem;
-  color: $dark; 
-  font-family: 'Great Vibes', cursive;
-  font-weight: 600;
+    font-size: 2.5rem;
+    color: $dark;
+    font-family: 'Great Vibes', cursive;
+    font-weight: 600;
 }
 
 .calendar-day {
-  font-size: 3rem;
-  font-weight: 400;
-  color: $dark;
+    font-size: 3rem;
+    font-weight: 400;
+    color: $dark;
 }
 
 .line {
-  border-top: 2px solid $dark;
-  border-bottom: 2px solid $dark;
+    border-top: 2px solid $dark;
+    border-bottom: 2px solid $dark;
 }
 
 .calendar-box img {
-  max-width: 600px;
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
 }
