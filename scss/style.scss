@@ -251,7 +251,7 @@ $border-width: 2px;
     margin-bottom: 30px;
 }
 
-@keyframes heart-beat {
+@keyframes latido {
 
     0%,
     100% {
@@ -271,11 +271,17 @@ $border-width: 2px;
     }
 }
 
+.heart-beat {
+  animation: latido 1.2s infinite;
+  transform-origin: center;
+  display: inline-block; /* importante para que escale bien */
+}
+
 @media (min-width: 220px) {
     .timeline::after {
         position: absolute;
         content: "";
-        width: 50px;
+        width: 2px;
         top: 0;
         bottom: 0;
         left: 50%;
@@ -299,17 +305,17 @@ $border-width: 2px;
     .timeline .row::after {
         content: "\f004";
         font-family: "Font Awesome 5 Free";
-        font-weight: 900;
+        font-weight: 700;
         position: absolute;
         top: calc(50% - 10px);
         left: calc(50% - 8px);
         color: $primary;
         z-index: 2;
 
-        font-size: 20px; // Puedes ajustar el tamaño si lo deseas
+        font-size: 16px; // Puedes ajustar el tamaño si lo deseas
         display: inline-block; // ⚠️ Esta línea es imprescindible
         transform-origin: center;
-        animation: heart-beat 1.2s infinite;
+        animation: latido 1.2s infinite;
     }
 }
 
