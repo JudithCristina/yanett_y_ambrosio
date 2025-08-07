@@ -9245,6 +9245,9 @@ a.text-dark:hover, a.text-dark:focus {
   #event .border-right {
     border-right: none !important;
   }
+  .font-size-mobile {
+    font-size: 14px !important;
+  }
 }
 /********** Music Button **********/
 .music-button {
