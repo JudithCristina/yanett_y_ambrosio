@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = form.querySelector('button[type="submit"]');
 
     // 🔹 Pega aquí tu URL del Web App de Google Apps Script
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxTu_URL_DE_TU_WEBAPP/exec';
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyDrUC6Q7xCGv1jBe9tarqQ9z8FRKjzV_n0Nwri_JSBmytF603DFTcKYPCjQDZLU3nD/exec';
     // 🔹 Número de WhatsApp (Perú = 51)
     const WSP_NUMBER = '51927602272';
 
