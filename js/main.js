@@ -228,9 +228,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('rsvpForm');
   if (!form) return;
 
-  const statusBox   = document.getElementById('rsvpStatus');
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyDrUC6Q7xCGv1jBe9tarqQ9z8FRKjzV_n0Nwri_JSBmytF603DFTcKYPCjQDZLU3nD/exec'; // <- tu Web App URL
-  const WSP_NUMBER  = '51927602272'; // WhatsApp de contacto
+  const statusBox = document.getElementById('rsvpStatus');
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyDrUC6Q7xCGv1jBe9tarqQ9z8FRKjzV_n0Nwri_JSBmytF603DFTcKYPCjQDZLU3nD/exec';
+  const WSP_NUMBER = '51927602272';
+
+  // 🚀 FUNCIÓN PARA ABRIR WHATSAPP OPTIMIZADA
+  function openWhatsApp(phoneNumber, message) {
+    const encodedMessage = encodeURIComponent(message);
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      
+      if (isAndroid) {
+        // Android: Usar intent que siempre abre la app
+        window.open(`intent://send?phone=${phoneNumber}&text=${encodedMessage}#Intent;scheme=whatsapp;package=com.whatsapp;end`, '_blank');
+      } else {
+        // iOS: Usar protocolo nativo
+        window.open(`whatsapp://send?phone=${phoneNumber}&text=${encodedMessage}`, '_blank');
+      }
+      
+      // Fallback universal si no funciona después de 2 segundos
+      setTimeout(() => {
+        window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+      }, 2000);
+      
+    } else {
+      // Desktop: wa.me funciona perfecto
+      window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+    }
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -239,8 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (form.website && form.website.value.trim() !== '') return;
 
     const nombre = (form.nombre?.value || '').trim();
-    const pases  = (form.pases?.value  || '').trim();
-    const nota   = (form.nota?.value   || '').trim();
+    const pases = (form.pases?.value || '').trim();
+    const nota = (form.nota?.value || '').trim();
 
     if (!nombre || !pases) {
       alert('Por favor completa tu nombre y el número de pase.');
@@ -268,16 +295,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (ok) {
         if (statusBox) statusBox.innerHTML =
-          '<span class="text-success">¡Listo! Tu confirmación fue registrada.</span>';
+          '<span class="text-success">¡Listo! Tu confirmación fue registrada. 🚀 Abriendo WhatsApp...</span>';
 
-        // Abrimos WhatsApp con el mensaje
-        const msg =
-`💌 Hola, soy *${nombre}*.
-✅ Confirmo mi asistencia.
-🎟️ Pase(s): ${pases}
-${nota ? `📝 Nota: ${nota}\n` : ''}¡Gracias!`;
-
-        window.open(`https://wa.me/${WSP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+        // 🚀 WHATSAPP OPTIMIZADO - REEMPLAZAMOS ESTA PARTE
+        const msg = `💌 Hola, soy *${nombre}*. ✅ Confirmo mi asistencia. 🎟️ Pase(s): ${pases} ${nota ? `📝 Nota: ${nota}\n` : ''}¡Gracias!`;
+        
+        // ✅ NUEVA FUNCIÓN OPTIMIZADA
+        openWhatsApp(WSP_NUMBER, msg);
+        
         // form.reset(); // si quieres limpiar
       } else {
         if (statusBox) statusBox.innerHTML =
