@@ -224,84 +224,71 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// ====== RSVP -> Enviar a Google Sheets + abrir WhatsApp ======
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('rsvpForm');
-    if (!form) return;
+  const form = document.getElementById('rsvpForm');
+  if (!form) return;
 
-    // Prefill desde ?nombre= si existe
-    const params = new URLSearchParams(location.search);
-    const nombreURL = params.get('nombre');
-    if (nombreURL && form.nombre) form.nombre.value = decodeURIComponent(nombreURL);
+  const statusBox   = document.getElementById('rsvpStatus');
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyDrUC6Q7xCGv1jBe9tarqQ9z8FRKjzV_n0Nwri_JSBmytF603DFTcKYPCjQDZLU3nD/exec'; // <- tu Web App URL
+  const WSP_NUMBER  = '51927602272'; // WhatsApp de contacto
 
-    const statusBox = document.getElementById('rsvpStatus');
-    const submitBtn = form.querySelector('button[type="submit"]');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    // 🔹 Pega aquí tu URL del Web App de Google Apps Script
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyDrUC6Q7xCGv1jBe9tarqQ9z8FRKjzV_n0Nwri_JSBmytF603DFTcKYPCjQDZLU3nD/exec';
-    // 🔹 Número de WhatsApp (Perú = 51)
-    const WSP_NUMBER = '51927602272';
+    // Honeypot (anti-bot)
+    if (form.website && form.website.value.trim() !== '') return;
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    const nombre = (form.nombre?.value || '').trim();
+    const pases  = (form.pases?.value  || '').trim();
+    const nota   = (form.nota?.value   || '').trim();
 
-        // Honeypot anti-bot
-        const hp = form.querySelector('input[name="website"]');
-        if (hp && hp.value.trim() !== '') return;
+    if (!nombre || !pases) {
+      alert('Por favor completa tu nombre y el número de pase.');
+      return;
+    }
 
-        const nombre = (form.nombre?.value || '').trim();
-        const pases = (form.pases?.value || '').trim();
-        const nota = (form.nota?.value || '').trim();
+    const btn = form.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+    if (statusBox) statusBox.textContent = 'Guardando tu confirmación...';
 
-        if (!nombre || !pases) {
-            alert('Por favor completa tu nombre y el número de pase.');
-            return;
-        }
+    try {
+      // Enviamos como x-www-form-urlencoded (evita CORS preflight)
+      const body = new URLSearchParams({ nombre, pases, nota });
 
-        // Bloquea botón mientras envía
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
-        }
-        if (statusBox) {
-            statusBox.textContent = '';
-        }
+      const res = await fetch(WEB_APP_URL, { method: 'POST', body });
+      const txt = await res.text(); // útil para debug
+      console.log('Respuesta Apps Script:', txt);
 
-        try {
-            // 1) Enviar a Google Sheets
-            const res = await fetch(WEB_APP_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nombre, pases, nota })
-            });
+      // Intentamos parsear JSON, si no, usamos res.ok
+      let ok = res.ok;
+      try {
+        const json = JSON.parse(txt);
+        ok = !!json.ok;
+      } catch (_) {}
 
-            const json = await res.json().catch(() => ({ ok: false }));
-            if (!json.ok) throw new Error(json.error || 'Error al guardar');
+      if (ok) {
+        if (statusBox) statusBox.innerHTML =
+          '<span class="text-success">¡Listo! Tu confirmación fue registrada.</span>';
 
-            // 2) Abrir WhatsApp con mensaje amable
-            const mensaje =
-                `💌 Hola, soy *${nombre}*.
+        // Abrimos WhatsApp con el mensaje
+        const msg =
+`💌 Hola, soy *${nombre}*.
 ✅ Confirmo mi asistencia.
-🎟️ Número de pase(s): ${pases}
+🎟️ Pase(s): ${pases}
 ${nota ? `📝 Nota: ${nota}\n` : ''}¡Gracias!`;
 
-            const wspUrl = `https://wa.me/${WSP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
-            window.open(wspUrl, '_blank');
-
-            if (statusBox) {
-                statusBox.innerHTML = '<span class="text-success">¡Gracias! Tu confirmación fue registrada.</span>';
-            }
-
-        } catch (err) {
-            console.error(err);
-            if (statusBox) {
-                statusBox.innerHTML = '<span class="text-danger">Ocurrió un error al enviar. Intenta nuevamente.</span>';
-            }
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Confirmo Asistencia';
-            }
-        }
-    });
+        window.open(`https://wa.me/${WSP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+        // form.reset(); // si quieres limpiar
+      } else {
+        if (statusBox) statusBox.innerHTML =
+          '<span class="text-danger">No pudimos guardar tu confirmación. Intenta de nuevo.</span>';
+      }
+    } catch (err) {
+      console.error(err);
+      if (statusBox) statusBox.innerHTML =
+        '<span class="text-danger">Hubo un problema al enviar. Intenta nuevamente.</span>';
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Confirmo Asistencia'; }
+    }
+  });
 });
