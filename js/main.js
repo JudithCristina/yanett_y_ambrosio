@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 audio.play().then(() => {
                     isPlaying = true;
                     musicBtn.classList.add('active');
-                }).catch(() => {});
+                }).catch(() => { });
             }
         }, { once: true });
     }
@@ -181,45 +181,127 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const envelope = document.querySelector("a.envelope-btn"); // El botón que lleva a inicio.html
-  if (envelope) {
-    envelope.addEventListener("click", function () {
-      // Guardar bandera en localStorage
-      localStorage.setItem("playMusic", "true");
-    });
-  }
+    const envelope = document.querySelector("a.envelope-btn"); // El botón que lleva a inicio.html
+    if (envelope) {
+        envelope.addEventListener("click", function () {
+            // Guardar bandera en localStorage
+            localStorage.setItem("playMusic", "true");
+        });
+    }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const audio = document.getElementById('bg-music');
-  const musicBtn = document.getElementById('music-btn');
+    const audio = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-btn');
 
-  if (!audio) return;
+    if (!audio) return;
 
-  // ✅ Reproducir automáticamente si viene del sobre
-  const shouldPlay = localStorage.getItem("playMusic");
-  localStorage.removeItem("playMusic"); // Limpia la bandera
+    // ✅ Reproducir automáticamente si viene del sobre
+    const shouldPlay = localStorage.getItem("playMusic");
+    localStorage.removeItem("playMusic"); // Limpia la bandera
 
-  if (shouldPlay === "true") {
-    audio.play().then(() => {
-      if (musicBtn) musicBtn.classList.add('active');
-    }).catch(() => {
-      console.warn("Navegador bloqueó reproducción automática");
+    if (shouldPlay === "true") {
+        audio.play().then(() => {
+            if (musicBtn) musicBtn.classList.add('active');
+        }).catch(() => {
+            console.warn("Navegador bloqueó reproducción automática");
+        });
+    }
+
+    // ✅ Control manual del botón
+    if (musicBtn) {
+        let isPlaying = !audio.paused;
+
+        musicBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.add('active');
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('active');
+            }
+        });
+    }
+});
+
+// ====== RSVP -> Enviar a Google Sheets + abrir WhatsApp ======
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('rsvpForm');
+    if (!form) return;
+
+    // Prefill desde ?nombre= si existe
+    const params = new URLSearchParams(location.search);
+    const nombreURL = params.get('nombre');
+    if (nombreURL && form.nombre) form.nombre.value = decodeURIComponent(nombreURL);
+
+    const statusBox = document.getElementById('rsvpStatus');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    // 🔹 Pega aquí tu URL del Web App de Google Apps Script
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxTu_URL_DE_TU_WEBAPP/exec';
+    // 🔹 Número de WhatsApp (Perú = 51)
+    const WSP_NUMBER = '51927602272';
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Honeypot anti-bot
+        const hp = form.querySelector('input[name="website"]');
+        if (hp && hp.value.trim() !== '') return;
+
+        const nombre = (form.nombre?.value || '').trim();
+        const pases = (form.pases?.value || '').trim();
+        const nota = (form.nota?.value || '').trim();
+
+        if (!nombre || !pases) {
+            alert('Por favor completa tu nombre y el número de pase.');
+            return;
+        }
+
+        // Bloquea botón mientras envía
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+        }
+        if (statusBox) {
+            statusBox.textContent = '';
+        }
+
+        try {
+            // 1) Enviar a Google Sheets
+            const res = await fetch(WEB_APP_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, pases, nota })
+            });
+
+            const json = await res.json().catch(() => ({ ok: false }));
+            if (!json.ok) throw new Error(json.error || 'Error al guardar');
+
+            // 2) Abrir WhatsApp con mensaje amable
+            const mensaje =
+                `💌 Hola, soy *${nombre}*.
+✅ Confirmo mi asistencia.
+🎟️ Número de pase(s): ${pases}
+${nota ? `📝 Nota: ${nota}\n` : ''}¡Gracias!`;
+
+            const wspUrl = `https://wa.me/${WSP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+            window.open(wspUrl, '_blank');
+
+            if (statusBox) {
+                statusBox.innerHTML = '<span class="text-success">¡Gracias! Tu confirmación fue registrada.</span>';
+            }
+
+        } catch (err) {
+            console.error(err);
+            if (statusBox) {
+                statusBox.innerHTML = '<span class="text-danger">Ocurrió un error al enviar. Intenta nuevamente.</span>';
+            }
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirmo Asistencia';
+            }
+        }
     });
-  }
-
-  // ✅ Control manual del botón
-  if (musicBtn) {
-    let isPlaying = !audio.paused;
-
-    musicBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        musicBtn.classList.add('active');
-      } else {
-        audio.pause();
-        musicBtn.classList.remove('active');
-      }
-    });
-  }
 });
